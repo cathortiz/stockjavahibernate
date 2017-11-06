@@ -1,6 +1,8 @@
 
 package com.entidades;
 
+import java.io.Serializable;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,7 +12,8 @@ import javax.persistence.ManyToOne;
  *
  * @author Catherin
  */
-public class VentaDet {
+@Entity
+public class VentaDet implements Serializable{
     private int num;
     private Articulo articulo;
     private int cant;
@@ -60,6 +63,4 @@ public class VentaDet {
     public void setVentaCab(VentaCab ventaCab) {
         this.ventaCab = ventaCab;
     }
-    
-    
 }

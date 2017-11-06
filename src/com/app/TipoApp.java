@@ -1,9 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.app;
+
+import com.entidades.Tipo;
+import java.util.Iterator;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import org.hibernate.Session;
+import util.HibernateUtil;
 
 /**
  *
@@ -17,8 +21,11 @@ public class TipoApp extends javax.swing.JDialog {
     public TipoApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        arranque();
+        setLocationRelativeTo(null);
     }
-
+    private Session st;
+    private DefaultTableModel model;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,7 +49,7 @@ public class TipoApp extends javax.swing.JDialog {
         btnInforme = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblTipos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -90,18 +97,38 @@ public class TipoApp extends javax.swing.JDialog {
 
         btnNuevo.setText("Nuevo");
         btnNuevo.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnNuevo);
 
         btnGuardar.setText("Guardar");
         btnGuardar.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnGuardar);
 
         btnEditar.setText("Editar");
         btnEditar.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnEditar);
 
         btnEliminar.setText("Eliminar");
         btnEliminar.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnEliminar);
 
         btnInforme.setText("Informe");
@@ -110,9 +137,14 @@ public class TipoApp extends javax.swing.JDialog {
 
         btnCancelar.setText("Cancelar");
         btnCancelar.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnCancelar);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblTipos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null}
@@ -129,7 +161,12 @@ public class TipoApp extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        tblTipos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblTiposMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblTipos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -148,7 +185,7 @@ public class TipoApp extends javax.swing.JDialog {
                                 .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE))
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 13, Short.MAX_VALUE))))
+                        .addGap(0, 9, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,14 +195,38 @@ public class TipoApp extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        nuevo();
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        arranque();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        guardar();
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void tblTiposMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTiposMouseClicked
+       obtenerTabla();
+    }//GEN-LAST:event_tblTiposMouseClicked
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        editar();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        eliminar();
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -222,8 +283,133 @@ public class TipoApp extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblTipos;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtId;
     // End of variables declaration//GEN-END:variables
+
+    private void limpiar(){
+        txtId.setText(null);
+        txtDescripcion.setText(null);
+        btnGuardar.setText("Guardar");
+    }
+    
+    private void arranque() {
+        limpiar();
+        txtId.setEnabled(false);
+        txtDescripcion.setEnabled(false);
+        btnGuardar.setEnabled(false);
+        btnEditar.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        btnInforme.setEnabled(true);
+        btnNuevo.setEnabled(true);
+        tblTipos.setEnabled(true);
+        defaultTableModel();
+        cargarTabla();
+    }
+
+    private void nuevo() {
+        limpiar();
+        btnNuevo.setEnabled(false);
+        btnGuardar.setEnabled(true);
+        txtDescripcion.setEnabled(true);
+        txtId.setText("Auto");
+    }
+
+    private void defaultTableModel() {
+        tblTipos.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tblTipos.getColumnModel().getColumn(1).setPreferredWidth(350);
+        model = (DefaultTableModel) tblTipos.getModel();
+        model.setRowCount(0);
+    }
+
+    private void cargarTabla() {
+        st = HibernateUtil.getSessionFactory().openSession();
+        st.beginTransaction();
+        List<Tipo> lista = st.createQuery("from Tipo").list();
+        for (Iterator<Tipo> it = lista.iterator(); it.hasNext();) {
+            Tipo tipo = it.next();
+            model.addRow(new Object[]
+            {tipo.getId(), tipo.getDes()});
+        }
+        st.getTransaction().commit();
+        st.close();
+    }
+
+    private void guardar() {
+        st = HibernateUtil.getSessionFactory().openSession();
+        if(txtDescripcion.getText().isEmpty()){
+           JOptionPane.showMessageDialog(null, "Imposible guardar campo vacio.");
+        }
+        else{
+            if(btnGuardar.getText().equals("Guardar")){
+                st.beginTransaction();
+                Tipo t = new Tipo();
+                t.setDes(txtDescripcion.getText());
+                st.save(t);
+                st.getTransaction().commit();
+                st.close();
+                JOptionPane.showMessageDialog(null, "Registro guardado.");
+                arranque();
+        }
+            else{
+                st.beginTransaction();
+                int fila = this.tblTipos.getSelectedRow();
+                Object valueAt = model.getValueAt(fila, 0);
+                int idTipo = Integer.parseInt(valueAt.toString());
+                Tipo t = (Tipo) st.load(Tipo.class, idTipo);
+                t.setDes(txtDescripcion.getText());
+                st.update(t);
+                st.getTransaction().commit();
+                st.close();
+                JOptionPane.showMessageDialog(null, "Registro actualizado.");
+                arranque();
+            }
+        }
+    }
+
+    private void obtenerTabla() {
+        int fila = this.tblTipos.getSelectedRow();//Obtenemos la fila seleccionada...
+        Object valueAt = model.getValueAt(fila, 0);//Obtenemos el valor de esa fila...
+        int idTipo = Integer.parseInt(valueAt.toString());//Convertimos el valor en entero...
+        st = HibernateUtil.getSessionFactory().openSession();//creamos y abrimos la sesión de Hibernate...
+        st.beginTransaction();
+        Tipo t = (Tipo) st.load(Tipo.class, idTipo);//Hacemos un load pasando como argumento la clase Tipo y  el Id del mismo...
+        txtId.setText(String.valueOf(t.getId()));//Asignamos valor al JTextField id.
+        txtDescripcion.setText(t.getDes());//Asignamos valor al JTextField des.
+        btnEditar.setEnabled(true);//Activamos el botón editar...
+        btnEliminar.setEnabled(true);//Activamos el botón eliminar...
+        btnNuevo.setEnabled(false);//Desactivamos el botón nuevo...
+        btnGuardar.setText("Actualizar");//Cambiamos el de guardar...
+        st.getTransaction().commit();
+        st.close();
+    }
+
+    private void editar() {
+        btnGuardar.setEnabled(true);//Activamos botón guardar...
+        txtDescripcion.setEnabled(true);//Activamos JTextField...
+        btnEliminar.setEnabled(false);//Desactivamos botón eliminar
+        tblTipos.setEnabled(false);//Desactivamos el JTable
+    }
+
+    private void eliminar() {
+        int opc = JOptionPane.showConfirmDialog(null,"Desea eliminar el Registro.", 
+                "Eliminación de Registro.", JOptionPane.YES_NO_OPTION);//Obtenemos la selección del usuario
+        if(opc == 1){ //Si la selección del usuario es 1 no eliminamos, si es diferente se elimina.
+            JOptionPane.showMessageDialog(null, "Registro no Eliminado.");
+            arranque();//Si no se elimina se llama al metodo arranque() para limpiar campos
+        } else {//Opción eliminar seleccionada
+            st = HibernateUtil.getSessionFactory().openSession();
+            st.beginTransaction();//Iniciamos transacción
+            int fila = tblTipos.getSelectedRow();//Obtenemos selección
+            Object valueAt = model.getValueAt(fila, 0);//Recuperamos valor
+            int idTipo = Integer.parseInt(valueAt.toString());//Convertimos valor a entero
+            Tipo t = (Tipo) st.load(Tipo.class, idTipo);//Hacemos un load pasando como argumento la clase Tipo y  el Id del mismo...
+            st.delete(t);//Utilizamos delete pasando como argumento el objeto Tipo que cargamos con load...
+            st.getTransaction().commit();//Confirmamos la transacción...
+            st.close();//Cerramos la conexión...
+            JOptionPane.showMessageDialog(null, "Registro Eliminado.");//Indicamos al usuario que el proceso fue exitoso...
+            arranque();//Limpiamos campos con el metodo arranque()...
+        }
+    }
 }

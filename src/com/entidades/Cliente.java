@@ -4,6 +4,7 @@ package com.entidades;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +14,7 @@ import javax.persistence.OneToMany;
  *
  * @author Catherin
  */
+@Entity
 public class Cliente implements Serializable{
     private List<VentaCab> ventaCabs = new ArrayList<VentaCab>();
     private int id;

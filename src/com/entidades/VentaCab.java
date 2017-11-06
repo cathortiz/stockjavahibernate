@@ -5,10 +5,12 @@
  */
 package com.entidades;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +22,8 @@ import javax.persistence.Temporal;
  *
  * @author Catherin
  */
-public class VentaCab {
+@Entity
+public class VentaCab implements Serializable {
     private List<VentaDet> ventaDets = new ArrayList<VentaDet>();
     private int num;
     private Cliente cliente;
@@ -56,11 +59,12 @@ public class VentaCab {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-
+    
+    @ManyToOne
     public Funcionario getFuncionario() {
         return funcionario;
     }
-
+    
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
@@ -89,7 +93,4 @@ public class VentaCab {
     public void setTotal(long total) {
         this.total = total;
     }
-    
-    
-
 }

@@ -79,8 +79,5 @@ public class Articulo implements Serializable{
 
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
-    }
-    
-    
-    
+    }  
 }

@@ -1,10 +1,12 @@
 
 package com.entidades;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +18,8 @@ import javax.persistence.Temporal;
  *
  * @author Catherin
  */
-public class CompraCab {
+@Entity
+public class CompraCab implements Serializable{
     private List<CompraDet> compraDets = new ArrayList<CompraDet>();
     private int id;
     private int num;
@@ -95,6 +98,4 @@ public class CompraCab {
     public void setTotal(long total) {
         this.total = total;
     }
-    
-    
 }

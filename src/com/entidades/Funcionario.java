@@ -26,7 +26,7 @@ public class Funcionario implements Serializable{
     private String cargo;
     
     
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "funcionario")
     public List<CompraCab> getCompraCabs() {
         return compraCabs;
     }
@@ -34,7 +34,7 @@ public class Funcionario implements Serializable{
     public void setCompraCabs(List<CompraCab> compraCabs) {
         this.compraCabs = compraCabs;
     }
-
+    @OneToMany(mappedBy = "funcionario")
     public List<VentaCab> getVentaCabs() {
         return ventaCabs;
     }
@@ -92,6 +92,4 @@ public class Funcionario implements Serializable{
     public void setCargo(String cargo) {
         this.cargo = cargo;
     }
-    
-    
 }
