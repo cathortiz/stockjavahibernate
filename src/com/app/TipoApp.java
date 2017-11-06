@@ -185,7 +185,7 @@ public class TipoApp extends javax.swing.JDialog {
                                 .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE))
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 9, Short.MAX_VALUE))))
+                        .addGap(0, 10, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,7 +195,7 @@ public class TipoApp extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -393,8 +393,8 @@ public class TipoApp extends javax.swing.JDialog {
     }
 
     private void eliminar() {
-        int opc = JOptionPane.showConfirmDialog(null,"Desea eliminar el Registro.", 
-                "Eliminación de Registro.", JOptionPane.YES_NO_OPTION);//Obtenemos la selección del usuario
+        int opc = JOptionPane.showConfirmDialog(null,"¿Desea eliminar este Tipo?", 
+                "Eliminación de Registro", JOptionPane.YES_NO_OPTION);//Obtenemos la selección del usuario
         if(opc == 1){ //Si la selección del usuario es 1 no eliminamos, si es diferente se elimina.
             JOptionPane.showMessageDialog(null, "Registro no Eliminado.");
             arranque();//Si no se elimina se llama al metodo arranque() para limpiar campos

@@ -22,6 +22,8 @@ public class Proveedor implements Serializable{
     private String des;
     private String dir;
     private String tel;
+    private String cuit;
+
 
     @OneToMany(mappedBy = "proveedor")
     public List<CompraCab> getCompraCabs() {
@@ -30,6 +32,14 @@ public class Proveedor implements Serializable{
 
     public void setCompraCabs(List<CompraCab> compraCabs) {
         this.compraCabs = compraCabs;
+    }
+    
+       public String getCuit() {
+        return cuit;
+    }
+
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
     }
 
     @Id
