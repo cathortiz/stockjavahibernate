@@ -4,8 +4,15 @@ package com.app;
 import com.entidades.Tipo;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import org.hibernate.Session;
 import util.HibernateUtil;
 
@@ -133,6 +140,11 @@ public class TipoApp extends javax.swing.JDialog {
 
         btnInforme.setText("Informe");
         btnInforme.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        btnInforme.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInformeActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnInforme);
 
         btnCancelar.setText("Cancelar");
@@ -227,6 +239,10 @@ public class TipoApp extends javax.swing.JDialog {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         eliminar();
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnInformeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInformeActionPerformed
+        informe();
+    }//GEN-LAST:event_btnInformeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -404,7 +420,8 @@ public class TipoApp extends javax.swing.JDialog {
             int fila = tblTipos.getSelectedRow();//Obtenemos selección
             Object valueAt = model.getValueAt(fila, 0);//Recuperamos valor
             int idTipo = Integer.parseInt(valueAt.toString());//Convertimos valor a entero
-            Tipo t = (Tipo) st.load(Tipo.class, idTipo);//Hacemos un load pasando como argumento la clase Tipo y  el Id del mismo...
+            Tipo t = (Tipo) st.load(Tipo.class, idTipo);//Hacemos un load pasando como argumento la clase Tipo 
+            //y  el Id del mismo...
             st.delete(t);//Utilizamos delete pasando como argumento el objeto Tipo que cargamos con load...
             st.getTransaction().commit();//Confirmamos la transacción...
             st.close();//Cerramos la conexión...
@@ -412,4 +429,33 @@ public class TipoApp extends javax.swing.JDialog {
             arranque();//Limpiamos campos con el metodo arranque()...
         }
     }
+    public void informe(){
+    //try - para controlar las excepciones.
+    try {
+        //Creamos una lista de los datos de la table "Tipo" utilizando "List".
+        st = HibernateUtil.getSessionFactory().openSession();
+        st.beginTransaction();
+        List<Tipo> lista = (List<Tipo>)st.createQuery("From Tipo").list();
+        //Utilizamos el método siguiente para cargar el reporte "TipoReport.jasper"
+        //El "JRLoader.loadObject" es el cargador.
+        JasperReport report  = (JasperReport)JRLoader.loadObject(ClassLoader.getSystemResource("com/informes/ListaTipo.jasper")); 
+        //El método siguiente nos permite pasarle los datos al reporte utilizando JRBeanCollectionDataSource y como argumento la lista que creamos más arriba.
+        //La lista posee dos campos por registro: "id" y "des", los nombres se corresponden con las agregadas en el reporte diseñado.
+        JasperPrint fillReport = JasperFillManager.fillReport(report, null,new JRBeanCollectionDataSource(lista));
+        //El JasperViewer para visualizar, le pasamos como argumento nuestro "fillReport" de arriba.
+        JasperViewer jviewer = new JasperViewer(fillReport,false);
+        //Cargamos el reporte en un dialog para mostrarlo dentro del sistema
+        JDialog dialog = new JDialog(this);
+        dialog.setContentPane(jviewer.getContentPane());
+        dialog.setSize(jviewer.getSize());
+        dialog.setTitle("Lista de Tipos de Artículos");
+        //La hacemos visible.
+        dialog.setVisible(true);
+        st.getTransaction().commit();
+        st.close();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error cargando reporte.");
+        e.printStackTrace();
+    }
+}
 }

@@ -10,6 +10,8 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.hibernate.Session;
+import util.HibernateUtil;
 
 /**
  *
@@ -20,6 +22,7 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
+    private Session st;
     public Principal() {
         initComponents();
         //Centrar FOrmulario
@@ -29,6 +32,7 @@ public class Principal extends javax.swing.JFrame {
         //Indicar el icono para la aplicación
         this.setIconImage(new ImageIcon(ClassLoader.getSystemResource("com/img/Ventas.png")).getImage());
         this.setTitle("SISTEMA DE COMPRA Y VENTA - 111 MIL PROGRAMADORES");
+        arranque();
     }
 
     /**
@@ -199,7 +203,7 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TipoArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TipoArtActionPerformed
-        // TODO add your handling code here:
+        llamarTipo();
     }//GEN-LAST:event_TipoArtActionPerformed
 
     private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
@@ -340,6 +344,13 @@ public class Principal extends javax.swing.JFrame {
         p.setDefaultCloseOperation(HIDE_ON_CLOSE);
         p.setTitle("Formulario de Proveedores");
         p.setVisible(true);                
+    }
+
+    private void arranque() {
+        st = HibernateUtil.getSessionFactory().openSession();
+        st.beginTransaction();
+        st.getTransaction().commit();
+        st.close();
     }
 
 }

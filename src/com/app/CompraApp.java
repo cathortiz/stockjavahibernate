@@ -28,8 +28,8 @@ public class CompraApp extends javax.swing.JDialog {
     public CompraApp(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setLocationRelativeTo(null);
-        arranque();
+        setLocationRelativeTo(null); //Centra el formulario
+        arranque(); //Prepara el formulario
     }
     
     private Session st;
